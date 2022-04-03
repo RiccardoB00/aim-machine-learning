@@ -162,7 +162,7 @@ my_model = NeighborRegressor(**best_params_kfold)
 skl_model.fit(X, y)
 my_model.fit(X, y)
 # daranno le stesse previsioni a parità di parametri?
-print(np.all(my_model.predict(X)==skl_model.predict(X)),file=f)
+print(np.all(np.isclose(0,my_model.predict(X)-skl_model.predict(X),atol=1e-4)),file=f)
 # vorremmo utilizzare la nostra classe ParametersTuner sull'implementazione di sklearn di KNeighbors.
 try:
     tuner = ParametersTuner(model_class=KNeighborsRegressor, X=X, y=y, supported_eval_types=['kfold'], output_path='output/')

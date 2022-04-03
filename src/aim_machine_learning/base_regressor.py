@@ -3,10 +3,12 @@
 from abc import abstractmethod, ABC #ABC è l'equivalente della classe object per la classi astratte, una classe astratta sarà figlia di ABC, così che possa utilizzare il decoratore abstractmethod
 class Regressor(ABC):
     def __init__(self, **params):
-        self.params = params 
+        self.params = params
+
 
     @abstractmethod # questo decoratore fa sì che il metodo sia puramente astratto, questo implica che il tentativo di instanziare un oggetto di tipo Regressor risulterà in un TypeError
     def fit(self, X, y):
+        
         '''
         Addestra il modello di Machine Learning sulla base dei parametri forniti (differenti modelli avranno differenti parametri ed un differente utilizzo)
         aggiornando questi ultimi al fine di minimizzare l'errore sui dati forniti.
@@ -19,6 +21,7 @@ class Regressor(ABC):
             Le label su cui addestrare il modello.
 
         '''
+
         pass
 
     @abstractmethod
