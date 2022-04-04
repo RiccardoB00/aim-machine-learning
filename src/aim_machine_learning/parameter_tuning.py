@@ -64,9 +64,9 @@ class ParametersTuner():
 
             best_params={params_keys[0]:-1,params_keys[1]:-1}
 
-            for a in k_dict[params_keys[0]]:
+            for b in k_dict[params_keys[1]]:
 
-                for b in k_dict[params_keys[1]]:
+                for a in k_dict[params_keys[0]]:
 
                     mod_eval=ModelEvaluator(self.model_class,{'a':a,'b':b}, self.X, self.y)
 
@@ -87,7 +87,6 @@ class ParametersTuner():
                         best_params[params_keys[0]]=a 
                         best_params[params_keys[1]]=b 
 
-        
         if len(self.output_path)>0 and fig_name is not None:
 
             plt.figure()
@@ -97,9 +96,11 @@ class ParametersTuner():
                 plt.xlabel(my_k)
             
             else:
-                plt.plot(k_dict[params_keys[0]],np.array(results))
-                plt.xlabel('a')
-
+                results=np.array(results).reshape(len(list(k_dict[params_keys[1]])),len(list(k_dict[params_keys[0]])))
+                for i in range(len(list(k_dict[params_keys[1]]))): #si cicla sul secondo parametro(lo si tiene fissato nel plot) così da rendere corretto l'output presente nel main
+                    plt.plot(k_dict[params_keys[0]],results[i,:],label='{} = {}'.format(params_keys[1],k_dict[params_keys[1]][i]))
+                    plt.xlabel(params_keys[0])
+                plt.legend()
 
             plt.title(fig_name)
             plt.ylabel('Upper bound MSE')
