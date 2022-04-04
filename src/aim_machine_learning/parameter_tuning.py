@@ -102,6 +102,7 @@ class ParametersTuner():
                     plt.xlabel(params_keys[0])
                 plt.legend()
 
+            plt.plot(best_params[params_keys[0]],min_value,marker='o',markerfacecolor='navy')
             plt.title(fig_name)
             plt.ylabel('Upper bound MSE')
             plt.savefig('{} {}'.format((self.output_path)['output_path'],fig_name))
