@@ -20,22 +20,34 @@ class NeighborRegressor(Regressor):
     
     def predict(self,x):
 
+        if x.shape[1]!= self.xtrain.shape[1]:
+            raise NameError('Il dataset di training e il dataset di test hanno #features diverso')
+
         if not self.status_fit:
             raise NameError('Non si è trainato il modello, non è possibile chiamare predict')
 
-        e_d=Euclidean_Distance()
+        e_d=Euclidean_Distance() #Si inizializza un oggetto con cui calcolare la distanza euclidea
         n_test=x.shape[0]
         n_train=self.xtrain.shape[0]
         ypredict=np.zeros(n_test) #Si inizializza un np.array di zeri che verrà riempito con le y_hat con cui si farà previsione
 
-        for row in range(n_test):
-            distances=np.zeros(n_train)
+        #Attraverso il try-except si rende il metodo consistente per xtest aventi un qualsiasi n di features
 
-            for i in range(n_train):
-                distances[i]=e_d(x[row,:],self.xtrain[i,:])
-            
-            index= np.argpartition(distances,self.k)[0:self.k]
-            ypredict[row]=np.mean(self.ytrain[index])
+        try:
+            for row in range(n_test):
+                distances=np.zeros(n_train)
+                for i in range(n_train):
+                    distances[i]=e_d(x[row,:],self.xtrain[i,:])
+                index= np.argpartition(distances,self.k)[0:self.k]
+                ypredict[row]=np.mean(self.ytrain[index])
+
+        except IndexError:
+            for row in range(n_test):
+                distances=np.zeros(n_train)
+                for i in range(n_train):
+                    distances[i]=e_d(x[row],self.xtrain[i])   
+                index= np.argpartition(distances,self.k)[0:self.k]
+                ypredict[row]=np.mean(self.ytrain[index])
 
         return ypredict
 
